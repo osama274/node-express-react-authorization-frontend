@@ -29,11 +29,12 @@ function App() {
 
       if (response.ok) {
         const _currentUser = await response.json();
+        console.log( _currentUser)
         setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
       }
     })();
   }, [setCurrentUser]);
-
+  console.log(currentUser);
   return (
     <div className="App">
       {currentUser.login && (

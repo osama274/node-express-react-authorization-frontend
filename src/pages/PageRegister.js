@@ -63,8 +63,8 @@ const PageRegister = () => {
       requestOptions
     );
     if (response.ok) {
-      const _currentUser = await response.json();
-      setCurrentUser((prev) => ({ ...prev, ..._currentUser }));
+      const data = await response.json();
+      setCurrentUser((prev) => ({ ...prev, ...data.userAdded }));
       setSignupFormField_login("");
       setSignupFormField_password1("");
       setSignupFormField_password2("");
