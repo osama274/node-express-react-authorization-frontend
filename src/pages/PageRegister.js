@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useState ,useEffect} from "react";
 import AppContext from "../AppContext";
 import { useNavigate } from "react-router-dom";
+import { ImEyeBlocked, ImEye } from "react-icons/im";
 
 const PageRegister = () => {
   const navigate = useNavigate();
@@ -16,6 +17,21 @@ const PageRegister = () => {
   const [signupFormField_lastName, setSignupFormField_lastName] = useState("");
   const [signupFormField_email, setSignupFormField_email] = useState("");
 
+  const [firstNameIsValid, setFirstNameIsValid] = useState(false);
+   const [lastNameIsValid, setLastNameIsValid] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [emailIsValid, setEmailIsValid] = useState(false);
+  const [inputType1, setInputType1] = useState("password");
+  const [inputType2, setInputType2] = useState("password");
+  useEffect(() => {
+    setFormIsValid(
+      firstNameIsValid &&
+      lastNameIsValid &&
+      emailIsValid &&
+       signupFormField_password1 === signupFormField_password2
+    )
+  }, [emailIsValid,firstNameIsValid,lastNameIsValid,signupFormField_password1,signupFormField_password2]);
+
   // SIGNUP FORM FIELD HANDLERS
   const handle_signupFormField_login = (e) => {
     let login = e.target.value;
@@ -25,20 +41,36 @@ const PageRegister = () => {
     let password1 = e.target.value;
     setSignupFormField_password1(password1);
   };
+  const handleShowPasswordBtn1 = () => {
+    setInputType1(
+      inputType1 === "password" ? "text" : "password"
+    );
+  }
+  const handleShowPasswordBtn2 = () => {
+    setInputType2(
+      inputType2 === "password" ? "text" : "password"
+    );
+  }
   const handle_signupFormField_password2 = (e) => {
     let password2 = e.target.value;
     setSignupFormField_password2(password2);
   };
   const handle_signupFormField_firstName = (e) => {
     let firstName = e.target.value;
+    firstName.length > 1 && firstName.length <= 15 ? setFirstNameIsValid(true) : setFirstNameIsValid(false);
     setSignupFormField_firstName(firstName);
   };
   const handle_signupFormField_lastName = (e) => {
     let lastName = e.target.value;
+    lastName.length > 1 && lastName.length <= 15 ? setLastNameIsValid(true) : setLastNameIsValid(false);
+
     setSignupFormField_lastName(lastName);
   };
   const handle_signupFormField_email = (e) => {
     let email = e.target.value;
+
+    email && /^[a-z0-9_.-]{2,}@[a-z]{2,}\.[a-z]{2,}$/gi.test(email) ? setEmailIsValid(true) : setEmailIsValid(false);
+    
     setSignupFormField_email(email);
   };
   const handle_signupForm_signupButton = async (e) => {
@@ -92,20 +124,26 @@ const PageRegister = () => {
           <div className="row">
             <label htmlFor="signupFormField_password1">Password 1</label>
             <input
-              type="password"
+              type={inputType1}
               id="signupFormField_password1"
               value={signupFormField_password1}
               onChange={handle_signupFormField_password1}
-            />
+            /> 
+            <span className="eyes-icon" onClick={handleShowPasswordBtn1}>
+              {inputType1 === "password" ?   ( <ImEyeBlocked /> ) :( <ImEye />)}
+            </span>
           </div>
           <div className="row">
             <label htmlFor="signupFormField_password2">Password 2</label>
             <input
-              type="password"
+              type={inputType2}
               id="signupFormField_password2"
               value={signupFormField_password2}
               onChange={handle_signupFormField_password2}
             />
+            <span className="eyes-icon" onClick={handleShowPasswordBtn2}>
+              {inputType2=== "password" ?   ( <ImEyeBlocked /> ) :( <ImEye />)}
+            </span>
           </div>
           <div className="row">
             <label htmlFor="signupFormField_firstName">First Name</label>
@@ -135,7 +173,7 @@ const PageRegister = () => {
             />
           </div>
           <div className="buttonRow">
-            <button onClick={handle_signupForm_signupButton}>Submit</button>
+            <button disabled={!formIsValid} onClick={handle_signupForm_signupButton}>Submit</button>
           </div>
         </fieldset>
       </form>

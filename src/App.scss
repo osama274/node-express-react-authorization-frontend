@@ -73,6 +73,11 @@ body {
             width: 300px;
           }
         }
+        .eyes-icon {
+          padding: 20px;
+          color: brown;
+          font-size: 18px;
+        }
         .note {
           font-size: 1rem;
           margin: 0 0 20px 97px;
@@ -101,6 +106,33 @@ body {
     h3 {
       margin: 0 0 20px 0;
       color: brown;
+    }
+    .minimalistBlack {
+      border-collapse: collapse;
+      width: 100%;
+      tr{
+        td {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: left;
+          background-color: #04aa6d;
+          color: white;
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+      }
+     
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      tr:hover {
+        background-color: #ddd;
+      }
+     
     }
   }
 }
